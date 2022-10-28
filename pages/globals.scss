@@ -1,0 +1,24 @@
+:root {
+    --black: #080a09;
+    --light: #02d684;
+    --mid: #00a79b;
+    --dark: #2d2c4a;
+    --transition: 0.1s linear;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-family: 'Noto Sans', sans-serif;
+    color: white;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    overflow-x: hidden;
+    background: var(--black);
+}

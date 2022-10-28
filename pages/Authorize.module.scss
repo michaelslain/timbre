@@ -1,0 +1,42 @@
+.container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url('/loginBackground.JPG') center center no-repeat;
+    background-size: cover;
+    position: relative;
+
+    .innerContainer {
+        width: 800px;
+        height: 600px;
+        padding: 50px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 30px;
+        background: var(--black);
+        border-radius: 50px;
+
+        .buttonContainer {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+    }
+
+    * {
+        z-index: 4;
+    }
+
+    .overlay {
+        background: var(--black);
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        z-index: 3;
+        opacity: 0.9;
+    }
+}

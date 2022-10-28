@@ -1,0 +1,66 @@
+$width: 100vw;
+$height: calc(100vh - 100px);
+$margin: 20px;
+
+.container {
+    width: $width;
+    height: $height;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: $width;
+        height: $height;
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.5));
+        z-index: 2;
+    }
+
+    .imageContainer {
+        flex: 1;
+        z-index: 1;
+        position: relative;
+    }
+
+    .buttonContainer,
+    .infoContainer {
+        z-index: 3;
+        position: absolute;
+    }
+
+    .buttonContainer {
+        height: calc($height - $margin * 2);
+        width: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: flex-end;
+        right: $margin;
+        top: $margin;
+        gap: 20px;
+
+        .button {
+            width: 30px;
+            height: 30px;
+            position: relative;
+            cursor: pointer;
+            transition: var(--transition);
+
+            &:hover {
+                opacity: 0.5;
+            }
+        }
+    }
+
+    .infoContainer {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        max-width: calc($width / 2 - $margin);
+        bottom: $margin;
+        left: $margin;
+    }
+}

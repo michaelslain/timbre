@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type Prameters {
+  acousticness     Int?
+  danceability     Int?
+  energy           Int?
+  instrumentalness Int?
+  liveness         Int?
+  popularity       Int?
+  happiness        Int?
+}
+
+type Song {
+  name    String
+  uri     String
+  artists String[]
+  href    String
+}
+
+model User {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  email      String    @unique
+  parameters Prameters
+  liked      Song[]
+}

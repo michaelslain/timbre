@@ -1,0 +1,13 @@
+.window {
+    width: 100vw;
+    height: calc(100vh - 100px);
+    overflow: hidden;
+    position: relative;
+}
+
+.reel {
+    display: flex;
+    position: absolute;
+    flex-direction: column;
+    transition: var(--transition);
+}

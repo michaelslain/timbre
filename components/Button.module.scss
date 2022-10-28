@@ -1,0 +1,30 @@
+.button {
+    text-decoration: none;
+    font-weight: bold;
+    width: 250px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+
+    &.primary {
+        background: var(--light);
+        border-color: var(--light);
+        color: var(--black);
+    }
+
+    &.secondary {
+        border-color: var(--dark);
+        color: var(--mid);
+    }
+
+    &:hover {
+        opacity: 0.8;
+    }
+}
