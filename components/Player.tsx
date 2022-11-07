@@ -1,49 +1,48 @@
-import { FC, useCallback, useEffect, useMemo, useRef } from 'react'
-import handleError from '../util/handleError'
+import { FC, useState, useEffect } from 'react'
 import isServer from '../util/isServer'
-
-const INITIAL_VOLUME = 1 // 0-1
 
 type Props = {
     songs: Array<any>
     reelPosition: number
     isPlaying: boolean
-    handlePlay: any
-    handlePause: any
 }
 
-const Player: FC<Props> = ({
-    songs,
-    reelPosition,
-    isPlaying,
-    handlePlay,
-    handlePause,
-}) => {
-    const src = useMemo(
-        () => (songs ? songs[Math.abs(reelPosition)]?.preview_url : ''),
-        [songs, reelPosition]
-    )
+const Player: FC<Props> = ({ songs, reelPosition, isPlaying }) => {
+    const [loadedAudio, setLoadedAudio] = useState<Array<HTMLAudioElement>>([])
 
-    console.log(songs[Math.abs(reelPosition)])
-
-    let audioPlayerRef: any = useRef()
-
-    const handleLocalPlay = () => isPlaying && audioPlayerRef?.current?.play()
-
+    // convert links into playable audio
     useEffect(() => {
-        if (!audioPlayerRef?.current) {
-        } else if (isPlaying) audioPlayerRef.current.play()
-        else audioPlayerRef.current.pause()
-    }, [isPlaying])
+        setLoadedAudio((v: any) => {
+            const newSongs = songs.slice(loadedAudio.length)
+            const newAudios = newSongs.map(song => {
+                const audio = new Audio(song.preview_url)
+                audio.loop = true
+                return audio
+            })
 
-    return (
-        <audio
-            {...{ src }}
-            ref={audioPlayerRef}
-            onTimeUpdate={handleLocalPlay}
-            loop
-        ></audio>
-    )
+            return [...v, ...newAudios]
+        })
+    }, [songs, setLoadedAudio, loadedAudio.length])
+
+    // play the right audio
+    useEffect(() => {
+        if (loadedAudio.length !== 0) {
+            const index = Math.abs(reelPosition)
+
+            if (!isServer() && isPlaying) {
+                loadedAudio[index - 1]?.pause()
+                loadedAudio[index + 1]?.pause()
+                loadedAudio[index]?.play()
+            } else loadedAudio[index]?.pause()
+        }
+
+        // prevent audio from playing when switching pages
+        return () => {
+            loadedAudio.forEach(audio => audio.pause())
+        }
+    }, [isPlaying, loadedAudio, reelPosition])
+
+    return <></>
 }
 
 export default Player

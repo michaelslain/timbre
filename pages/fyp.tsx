@@ -10,6 +10,7 @@ import {
 } from 'react'
 import getGenres from '../util/getGenres'
 import getSongs from '../util/getSongs'
+import handleError from '../util/handleError'
 import styles from './FYP.module.scss'
 
 // components
@@ -36,13 +37,17 @@ const FYP: NextPage<Props> = ({ initialSongs, genres }) => {
     const handlePause = useCallback(() => setIsPlaying(false), [setIsPlaying])
 
     const fetchMoreSongs = useCallback(async () => {
-        if (Math.abs(reelPosition) !== songs.length - 1) return
+        if (Math.abs(reelPosition) !== songs.length - 5) return
 
         // if scrolled to the bottom and need to fetch
         const res = await fetch(
             `${process.env.NEXT_PUBLIC_DOMAIN}/api/getSongs`
         )
-        const { songs: newSongs } = await res.json()
+        const { songs: newSongs } = await res
+            .json()
+            .catch(err =>
+                handleError('fetching more songs request', JSON.stringify(err))
+            )
 
         setSongs(oldSongs => [...oldSongs, ...newSongs])
     }, [songs.length, reelPosition, setSongs])
@@ -51,7 +56,14 @@ const FYP: NextPage<Props> = ({ initialSongs, genres }) => {
         const res = await fetch(
             `${process.env.NEXT_PUBLIC_DOMAIN}/api/getSongs`
         )
-        const { songs: newSongs } = await res.json()
+        const { songs: newSongs } = await res
+            .json()
+            .catch(err =>
+                handleError(
+                    'json parsing in fetching new songs request',
+                    JSON.stringify(err)
+                )
+            )
 
         setSongs(_ => newSongs)
     }, [setSongs])
@@ -193,13 +205,13 @@ const FYP: NextPage<Props> = ({ initialSongs, genres }) => {
         () =>
             songs.map((song, i) => (
                 <Slide
-                    {...{ reelPosition, isPlaying, handlePlay, handlePause }}
+                    {...{ isPlaying, handlePlay, handlePause }}
                     key={i}
                     data={song}
                 />
             )),
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [songs, songs.length, reelPosition, isPlaying, setIsPlaying]
+        [songs, reelPosition, isPlaying, setIsPlaying]
     )
 
     useEffect(() => {
@@ -209,15 +221,6 @@ const FYP: NextPage<Props> = ({ initialSongs, genres }) => {
         window.addEventListener('mousedown', swipeMouseEventHandler)
         //@ts-ignore
         window.addEventListener('touchstart', swipeTouchEventHandler)
-
-        return () => {
-            //@ts-ignore
-            window.removeEventListener('keydown', keysEventHandler)
-            //@ts-ignore
-            window.removeEventListener('mouseup', swipeEventHandler)
-            //@ts-ignore
-            window.removeEventListener('touchstart', swipeTouchEventHandler)
-        }
     }, [
         scrollUp,
         scrollDown,
@@ -232,9 +235,7 @@ const FYP: NextPage<Props> = ({ initialSongs, genres }) => {
 
     return (
         <>
-            <Player
-                {...{ songs, reelPosition, isPlaying, handlePlay, handlePause }}
-            />
+            <Player {...{ songs, reelPosition, isPlaying }} />
             <div className={styles.container}>
                 <div className={styles.window}>
                     <div

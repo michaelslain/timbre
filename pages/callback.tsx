@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { set, del } from '../util/cookieHelper'
 import urlHashHelper from '../util/urlQueryHelper'
+import handleError from '../util/handleError'
 
 // components
 import Loading from '../components/Loading'
@@ -19,7 +20,14 @@ const Callback: NextPage = () => {
         set('auth-code', authCode, null, expiresIn)
 
         const res = await fetch(`/api/auth`)
-        const json = await res.json()
+        const json = await res
+            .json()
+            .catch(err =>
+                handleError(
+                    'json parsing error from /api/auth response',
+                    JSON.stringify(err)
+                )
+            )
 
         // if request went wrong
         if (res.status !== 200 || !json.accessToken) {

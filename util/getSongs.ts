@@ -1,6 +1,7 @@
 import handleTokens from './handleTokens'
 import handleError from './handleError'
 import createUrlQuery from './createUrlQuery'
+import addLikedDataToSongs from './addLikedDataToSongs'
 
 const GET_TOP_ARTISTS_URL =
     process.env.NEXT_PUBLIC_SPOTIFY_API_URL + '/v1/me/top/artists'
@@ -20,7 +21,7 @@ const getSongs = async (ctx: any) => {
 
     const data = {
         seed_artists: randomTopArtists.join(','),
-        limit: 10,
+        limit: 15,
     }
 
     // recommendations request
@@ -31,17 +32,27 @@ const getSongs = async (ctx: any) => {
             Authorization: `Bearer ${accessToken}`,
         },
     })
-    const json = await res.json()
+    const json = await res
+        .json()
+        .catch(err =>
+            handleError('json parsing get songs request', JSON.stringify(err))
+        )
 
     if (res.status !== 200) {
         await handleError(
             'get song recommendations request',
-            `${json.error}: ${json.error_description}`
+            json.error.message
         )
         return null
     }
 
-    return json.tracks
+    // filter out songs that don't have preview urls
+    const filteredTracks = json.tracks.filter(
+        (track: any) => track.preview_url != null
+    )
+
+    const songsWithLikedData = addLikedDataToSongs(filteredTracks, ctx)
+    return songsWithLikedData
 }
 
 const getTopArtists = async (ctx: any) => {

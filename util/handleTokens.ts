@@ -12,7 +12,14 @@ const handleTokens = async (ctx: any): Promise<boolean | string> => {
                 process.env.NEXT_PUBLIC_DOMAIN +
                     `/api/auth?refreshToken=${refreshToken}`
             )
-            const json = await res.json()
+            const json = await res
+                .json()
+                .catch(err =>
+                    handleError(
+                        'json parsing refresh token request',
+                        JSON.stringify(err)
+                    )
+                )
 
             // if request didn't go well
             if (res.status !== 200) {

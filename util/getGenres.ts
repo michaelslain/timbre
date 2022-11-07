@@ -15,16 +15,23 @@ const getGenres = async (ctx: any): Promise<Array<string> | null> => {
                 Authorization: `Bearer ${accessToken}`,
             },
         })
-        const json: any = await res.json()
+        const json: any = await res
+            .json()
+            .catch(err =>
+                handleError(
+                    'json parsing get genres request',
+                    JSON.stringify(err)
+                )
+            )
 
         if (res.status !== 200) {
-            await handleError(`${json.error}: ${json.error_description}`)
+            await handleError('get genres request', json.error.message)
             return null
         }
 
         return json.genres
     } catch (err) {
-        handleError(JSON.stringify(err))
+        handleError('get genres api', JSON.stringify(err))
         return null
     }
 }
