@@ -16,6 +16,7 @@ const Toolbar: FC = () => {
 
     const forceRefresh = () => setReloadCounter(v => v + 1)
 
+    // handles the hover animations
     const handleUpdateHoverState = (key: string, value: boolean) => {
         setHoverStates((oldHoverStates: any) => {
             oldHoverStates[key] = value
@@ -25,14 +26,22 @@ const Toolbar: FC = () => {
         forceRefresh()
     }
 
+    // converts tool bar into settings nav
+    const handleSettingsNav = () => {}
+
     const icons = useMemo(
         () => {
             return DATA.map((data, i) => (
-                <Icon
+                <a
                     key={i}
-                    {...{ data, hoverStates }}
-                    setHoverStates={handleUpdateHoverState}
-                />
+                    // makes burger menu open settings nav
+                    onClick={data === 'burger' ? handleSettingsNav : () => {}}
+                >
+                    <Icon
+                        {...{ data, hoverStates }}
+                        setHoverStates={handleUpdateHoverState}
+                    />
+                </a>
             ))
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps

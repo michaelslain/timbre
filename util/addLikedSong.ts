@@ -1,6 +1,5 @@
 import handleTokens from './handleTokens'
 import handleError from './handleError'
-import createUrlQuery from './createUrlQuery'
 
 const ADD_LIKED_SONG_URL =
     process.env.NEXT_PUBLIC_SPOTIFY_API_URL + '/v1/me/tracks'
