@@ -24,14 +24,10 @@ const getLikedSongs = async (offset: number, ctx: any) => {
         .json()
         .catch(err => handleError('liked songs json parsing', err))
 
-    console.log(2)
-
     if (res.status !== 200) {
         await handleError('get liked songs request', json.error.message)
         return null
     }
-
-    console.log(json)
 
     return json.items
 }

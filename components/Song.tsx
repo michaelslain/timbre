@@ -1,7 +1,10 @@
-import { FC, useRef, useEffect } from 'react'
+import { FC } from 'react'
 import Image from 'next/image'
 import deleteLikedSong from '../util/deleteLikedSong'
 import styles from './Song.module.scss'
+
+// components
+import Icon from './Icon'
 
 type Props = {
     artists: Array<any>
@@ -12,14 +15,7 @@ type Props = {
     setSongs: any
 }
 
-const Song: FC<Props> = ({
-    artists,
-    externalUrl,
-    previewUrl,
-    name,
-    id,
-    setSongs,
-}) => {
+const Song: FC<Props> = ({ artists, externalUrl, name, id, setSongs }) => {
     // unlikes the song for the user on spotify
     const handleDelteSong = async () => {
         const success = await deleteLikedSong(id, null)
@@ -36,26 +32,16 @@ const Song: FC<Props> = ({
 
     return (
         <div className={styles.container}>
-            <p className={styles.name}>{name}</p>
-            <p className={styles.artists}>
-                By: {artists.map(artist => artist.name).join(' ')}
-            </p>
-            <a
-                className={styles.openButton}
-                href={externalUrl}
-                target="_blank"
-                rel="noreferrer"
-            >
-                <Image
-                    src="/linkIcon.svg"
-                    alt="open in spotify"
-                    objectFit="fill"
-                    layout="fill"
-                />
-            </a>
-            <p onClick={handleDelteSong} className={styles.deleteButton}>
-                Delete
-            </p>
+            <div className={styles.dataContainer}>
+                <p className={styles.name}>{name}</p>
+                <p className={styles.artists}>
+                    By: {artists.map(artist => artist.name).join(', ')}
+                </p>
+            </div>
+            <div className={styles.buttonContainer}>
+                <Icon icon="link" href={externalUrl} target="_blank" />
+                <Icon icon="delete" onClick={handleDelteSong} />
+            </div>
         </div>
     )
 }

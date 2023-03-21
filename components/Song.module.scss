@@ -1,12 +1,31 @@
 .container {
+    $padding: 20px;
+
+    padding-left: $padding;
+    padding-right: $padding;
     height: 80px;
     background: var(--dark);
-    width: 80vw;
-    max-width: 700px;
+    width: calc(80vw - ($padding * 2));
+    max-width: calc(700px - ($padding * 2));
     display: flex;
+    justify-content: space-between;
     align-items: center;
     gap: 30px;
     transition: var(--transition);
+}
+
+.dataContainer,
+.buttonContainer {
+    display: flex;
+}
+
+.dataContainer {
+    flex-direction: column;
+}
+
+.buttonContainer {
+    align-items: center;
+    gap: 30px;
 }
 
 .playButton,

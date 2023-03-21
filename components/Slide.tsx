@@ -7,6 +7,7 @@ import styles from './Slide.module.scss'
 // components
 import Artists from './Artists'
 import SongName from './SongName'
+import Icon from './Icon'
 
 type Props = {
     data: any
@@ -56,36 +57,19 @@ const Slide: FC<Props> = ({ data, isPlaying, handlePlay, handlePause }) => {
                 />
             </div>
             <div className={styles.buttonContainer}>
-                <div className={styles.button} onClick={handleToggleLike}>
-                    <Image
-                        src={`/liked${liked ? 'Focus' : ''}Icon.svg`}
-                        alt="like button"
-                        objectFit="fill"
-                        layout="fill"
-                    />
-                </div>
-                <div className={styles.button}>
-                    <Image
-                        src={`/volumeIcon${isPlaying ? 'Play' : 'Pause'}.svg`}
-                        alt="mute button"
-                        objectFit="fill"
-                        layout="fill"
-                        onClick={handleToggleIsPlaying}
-                    />
-                </div>
-                <a
-                    className={styles.button}
+                <Icon
+                    icon={liked ? 'liked' : 'unliked'}
+                    onClick={handleToggleLike}
+                />
+                <Icon
+                    icon={isPlaying ? 'playing' : 'mute'}
+                    onClick={handleToggleIsPlaying}
+                />
+                <Icon
+                    icon="link"
                     href={data.external_urls.spotify}
                     target="_blank"
-                    rel="noreferrer"
-                >
-                    <Image
-                        src="/linkIcon.svg"
-                        alt="like button"
-                        objectFit="fill"
-                        layout="fill"
-                    />
-                </a>
+                />
             </div>
             <div className={styles.infoContainer}>
                 <Artists artists={data.artists} />
