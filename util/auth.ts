@@ -2,7 +2,7 @@ import { NextPageContext } from 'next'
 import { get } from './cookieHelper'
 import Router from 'next/router'
 
-const LOGIN_PAGES = ['/', '/authorize', '/callback']
+const LOGIN_PAGES = ['/authorize', '/callback']
 
 export default function auth(ctx: NextPageContext) {
     const refreshToken = get('refresh-token', ctx)
