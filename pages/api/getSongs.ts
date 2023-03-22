@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import getSongs from '../../util/getSongs'
 
 type Data = {
-    songs?: Array<any>
+    songs?: Array<any> | null
     err?: any
 }
 
