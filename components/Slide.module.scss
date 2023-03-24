@@ -1,5 +1,5 @@
 $width: 100vw;
-$height: min(calc(100vh - 100px), calc(100svh - 100px));
+$height: calc(100dvh - 100px);
 $margin: 20px;
 
 .container {
