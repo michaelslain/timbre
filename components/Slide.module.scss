@@ -1,11 +1,10 @@
 $width: 100vw;
-$height: calc(100vh - 100px);
+$height: min(calc(100vh - 100px), calc(100svh - 100px));
 $margin: 20px;
 
 .container {
     width: $width;
     height: $height;
-    max-height: calc(100svh - 100px);
     display: flex;
     flex-direction: column;
     position: relative;
