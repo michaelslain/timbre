@@ -5,6 +5,7 @@ $margin: 20px;
 .container {
     width: $width;
     height: $height;
+    max-height: calc(100svh - 100px);
     display: flex;
     flex-direction: column;
     position: relative;
