@@ -32,7 +32,14 @@ const Player: FC<Props> = ({ songs, reelPosition, isPlaying }) => {
             if (!isServer() && isPlaying) {
                 loadedAudio[index - 1]?.pause()
                 loadedAudio[index + 1]?.pause()
-                loadedAudio[index]?.play()
+                if (loadedAudio[index].readyState === 4)
+                    loadedAudio[index]?.play()
+                else
+                    loadedAudio[index]?.addEventListener(
+                        'canplaythrough',
+                        () => loadedAudio[index]?.play(),
+                        { once: true }
+                    )
             } else loadedAudio[index]?.pause()
         }
 
