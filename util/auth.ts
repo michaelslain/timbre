@@ -8,6 +8,26 @@ export default function auth(ctx: NextPageContext) {
     const refreshToken = get('refresh-token', ctx)
     let path = ctx.asPath ?? window.location.href
 
+    // !! temp
+    if (path === '/' && refreshToken && ctx.res) {
+        ctx.res.writeHead(307, { Location: '/fyp' })
+        ctx.res.end()
+        return
+    }
+    if (path === '/' && refreshToken) {
+        Router.replace('/fyp')
+        return
+    }
+    if (path === '/' && !refreshToken && ctx.res) {
+        ctx.res.writeHead(307, { Location: '/authorize' })
+        ctx.res.end()
+        return
+    }
+    if (path === '/' && !refreshToken) {
+        Router.replace('/authorize')
+        return
+    }
+
     // get path without query
     const queryIndex = path.indexOf('?')
     if (queryIndex !== -1) path = path.substring(0, queryIndex)
