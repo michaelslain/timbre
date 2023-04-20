@@ -192,8 +192,6 @@ const FYP: NextPage<Props> = ({ initialSongs, genres }) => {
     // event listener for swiping to scroll (mobile)
     const swipeTouchEventHandler = useCallback<TouchEventHandler<Window>>(
         e => {
-            e.preventDefault()
-
             const touch = e.touches[0]
             const initialTouchY = touch.clientY
 
