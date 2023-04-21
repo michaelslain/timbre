@@ -32,14 +32,7 @@ const Player: FC<Props> = ({ songs, reelPosition, isPlaying }) => {
             if (!isServer() && isPlaying) {
                 loadedAudio[index - 1]?.pause()
                 loadedAudio[index + 1]?.pause()
-                if (loadedAudio[index].readyState === 4)
-                    loadedAudio[index]?.play()
-                else
-                    loadedAudio[index]?.addEventListener(
-                        'canplaythrough',
-                        () => loadedAudio[index]?.play(),
-                        { once: true }
-                    )
+                loadedAudio[index]?.play()
             } else loadedAudio[index]?.pause()
         }
 
@@ -47,7 +40,7 @@ const Player: FC<Props> = ({ songs, reelPosition, isPlaying }) => {
         return () => {
             loadedAudio.forEach(audio => audio.pause())
         }
-    }, [isPlaying, loadedAudio, reelPosition])
+    }, [isPlaying, loadedAudio, loadedAudio.length, reelPosition])
 
     return <></>
 }
